@@ -1,3 +1,52 @@
-<nav>
-	Nadeko
-</nav>
+<header>
+    <div>
+        Nadeko
+    </div>
+    <nav>
+        <div>
+            <a href="/">Accueil</a>
+        </div>
+        <div>
+            <a href="/traductions/">Traductions</a>
+        </div>
+        <div>
+            <a href="/a-propos/">À propos</a>
+        </div>
+    </nav>
+</header>
+
+<style lang="scss">
+  @use "../styles/main";
+  @use "../styles/_colors";
+
+  header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+
+    font-family: main.$josefin-sans;
+    font-size: 16pt;
+
+    color: colors.$white;
+    background: linear-gradient(colors.$red-900, colors.$background);
+
+    height: 2em;
+
+    padding: 0 1em;
+
+    nav {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      width: 100%;
+
+      div {
+        a {
+            text-decoration: none;
+          color: colors.$white;
+        }
+      }
+    }
+  }
+</style>

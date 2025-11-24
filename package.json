@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.10",
+    "@fontsource-variable/josefin-sans": "^5.2.8",
+    "@fontsource/poppins": "^5.2.7",
     "astro": "^5.14.1",
     "sass": "^1.94.1"
   }

@@ -1,0 +1,9 @@
+@use 'sass:color';
+
+$white: oklch(98.5% 0 0);
+
+$red-950: oklch(25.8% 0.092 26.042);
+$red-900: oklch(39.6% 0.141 25.723);
+$red-700: oklch(50.5% 0.213 27.518);
+
+$background: color.adjust($red-950, $lightness: -20%);
