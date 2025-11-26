@@ -4,6 +4,15 @@ $white: oklch(98.5% 0 0);
 
 $red-950: oklch(25.8% 0.092 26.042);
 $red-900: oklch(39.6% 0.141 25.723);
+$red-800: oklch(44.4% 0.177 26.899);
 $red-700: oklch(50.5% 0.213 27.518);
+$red-400: oklch(70.4% 0.191 22.216);
+$red-300: oklch(80.8% 0.114 19.571);
+$red-200: oklch(88.5% 0.062 18.334);
 
-$background: color.adjust($red-950, $lightness: -20%);
+$stone-950: oklch(14.7% 0.004 49.25);
+$stone-900: oklch(21.6% 0.006 56.043);
+
+$background: $stone-900;
+
+$medium: 1024px;

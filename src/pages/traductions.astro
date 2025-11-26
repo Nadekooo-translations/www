@@ -1,0 +1,27 @@
+---
+import Layout from "../layouts/Layout.astro";
+import {getCollection} from "astro:content";
+
+const trans = (await getCollection("translations")).reverse();
+---
+<Layout
+        title="Traductions"
+        description="Mes traductions"
+>
+    <img
+            src="https://media1.tenor.com/m/yMtzIUk9ab4AAAAC/orson-welles-welles.gif"
+            alt="GIF de Orson Welles avec les mots &quot;Pas mal non ? C'est français.&quot;"
+    />
+
+    <div class="translations-container">
+        {
+            trans.map(t => (
+                <a>
+                    <article>
+                        <h3>{t.data.name}</h3>
+                    </article>
+                </a>
+            ))
+        }
+    </div>
+</Layout>

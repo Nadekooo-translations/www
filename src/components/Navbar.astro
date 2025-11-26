@@ -1,5 +1,5 @@
 <header>
-    <div>
+    <div class="heading">
         Nadeko
     </div>
     <nav>
@@ -29,11 +29,17 @@
     font-size: 16pt;
 
     color: colors.$white;
-    background: linear-gradient(colors.$red-900, colors.$background);
+    background: colors.$red-950;
 
     height: 2em;
 
     padding: 0 1em;
+
+    div.heading {
+      position: absolute;
+      left: 1em;
+      cursor: default;
+    }
 
     nav {
       display: flex;
@@ -43,8 +49,8 @@
 
       div {
         a {
-            text-decoration: none;
-          color: colors.$white;
+          text-decoration: none;
+            color: colors.$red-800;
         }
       }
     }
