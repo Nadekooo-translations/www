@@ -16,7 +16,7 @@ const trans = (await getCollection("translations")).reverse();
     <div class="translations-container">
         {
             trans.map(t => (
-                <a>
+                <a href={`/traductions/${t.id}`}>
                     <article>
                         <h3>{t.data.name}</h3>
                     </article>

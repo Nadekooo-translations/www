@@ -1,19 +1,28 @@
 ---
-import {getCollection, render} from "astro:content";
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
 
-export const getStaticPaths = (async () => {
+export const getStaticPaths = async () => {
 	const translations = await getCollection("translations");
 
-	return translations.map(translation => ({
+	return translations.map((translation) => ({
 		params: { id: translation.id },
 		props: { translation },
 	}));
-});
+};
 
-const {translation} = Astro.props;
-const {Content} = await render(translation);
+const { translation } = Astro.props;
+const { Content } = await render(translation);
 ---
 
-{translation.data.externalUrl ? <a href={translation.data.externalUrl}>Lien vers le projet</a> : undefined}
+<Layout
+	title={translation.data.name}
+>
+	{
+		translation.data.externalUrl ? (
+			<a href={translation.data.externalUrl}>Lien vers le projet</a>
+		) : undefined
+	}
 
-<Content />
+	<Content />
+</Layout>
