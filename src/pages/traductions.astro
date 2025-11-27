@@ -25,3 +25,22 @@ const trans = (await getCollection("translations")).reverse();
         }
     </div>
 </Layout>
+
+<style lang="scss">
+    @use "../styles/colors";
+
+    a {
+        text-decoration: none;
+        color: colors.$white;
+
+        article {
+            h3 {
+                color: colors.$red-400;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+</style>
