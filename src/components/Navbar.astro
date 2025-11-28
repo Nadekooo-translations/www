@@ -1,17 +1,37 @@
+---
+const path = Astro.url.pathname;
+
+const tabs = [
+	{
+		href: "/",
+		name: "Accueil",
+	},
+	{
+		href: "/traductions/",
+		name: "Traductions",
+		matches: [
+			/^\/traductions\/.*/
+		],
+	},
+	{
+		href: "/a-propos/",
+		name: "À propos",
+	},
+];
+
+const matches = (regexes: RegExp[] | undefined) => regexes?.some(r => r.test(path));
+---
+
 <header>
     <div class="heading">
         Nadeko
     </div>
     <nav>
-        <div>
-            <a href="/">Accueil</a>
-        </div>
-        <div>
-            <a href="/traductions/">Traductions</a>
-        </div>
-        <div>
-            <a href="/a-propos/">À propos</a>
-        </div>
+		{tabs.map(t =>
+                <div class={t.href === path || matches(t.matches) ? 'active' : ''}>
+                    <a href={t.href}>{t.name}</a>
+                </div>
+		)}
     </nav>
 </header>
 
@@ -33,7 +53,7 @@
 
     height: 2em;
 
-    padding: 0 1em;
+    padding: 0.5em 3em 0 1em;
 
     div.heading {
       position: absolute;
@@ -45,14 +65,20 @@
     nav {
       display: flex;
       flex-direction: row;
-      justify-content: center;
+      justify-content: flex-end;
       gap: 3em;
       width: 100%;
 
       div {
+        &.active {
+          a {
+            color: colors.$red-400;
+          }
+        }
+
         a {
           text-decoration: none;
-          color: colors.$red-800;
+          color: colors.$red-700;
         }
       }
     }
