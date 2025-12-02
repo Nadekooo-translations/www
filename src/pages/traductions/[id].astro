@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import {fetchCredits} from "../../weblateClient.ts";
+import {type CreditsResponse, fetchCredits} from "../../weblateClient.ts";
 
 export const getStaticPaths = async () => {
 	const translations = await getCollection("translations");
@@ -14,19 +14,16 @@ export const getStaticPaths = async () => {
 
 const { translation } = Astro.props;
 const { Content } = await render(translation);
-console.log(translation.data);
-let stats;
+let stats: CreditsResponse|undefined;
 
 if (translation.data.weblateComponent) {
 	stats = await fetchCredits(translation.data.weblateComponent);
-	console.log(stats);
 }
 ---
 
 <Layout
 	title={translation.data.name}
 >
-	{JSON.stringify(stats)}
 	{
 		translation.data.externalUrl ? (
 			<a href={translation.data.externalUrl}>Lien vers le projet</a>
