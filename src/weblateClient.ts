@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, {type AxiosInstance} from "axios";
 
 export interface CreditDatum {
 	email: string;
@@ -11,7 +11,7 @@ export interface CreditDatum {
 export type CreditLanguage = {[language: string] : CreditDatum[]}
 export type CreditsResponse = CreditLanguage[];
 
-const client = axios.create({
+const client: AxiosInstance = axios.create({
 	baseURL: import.meta.env.WEBLATE_BASE_URL,
 	headers: {
 		Authorization: "Token " + import.meta.env.WEBLATE_TOKEN,

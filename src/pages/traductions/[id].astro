@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import {type CreditsResponse, fetchCredits} from "../../weblateClient.ts";
+import {avatar, type CreditsResponse, fetchCredits} from "../../weblateClient.ts";
 
 export const getStaticPaths = async () => {
 	const translations = await getCollection("translations");
@@ -31,4 +31,23 @@ if (translation.data.weblateComponent) {
 	}
 
 	<Content />
+
+	<aside>
+		{stats &&
+			<>
+				<h2>Contributeurs</h2>
+
+				{
+					stats
+						?.flatMap(l => l['French'])
+						.map(c =>
+							<div>
+								<img alt="" src={avatar(c.username)} />
+								{ c.full_name }
+							</div>
+						)
+				}
+			</>
+		}
+	</aside>
 </Layout>
