@@ -33,6 +33,12 @@ if (translation.data.weblateComponent) {
     <Content/>
 
     <aside slot="after-main">
+        {translation.data.externalUrl &&
+            <a href={translation.data.externalUrl} class="external-website">
+                Site web <i class="ph arrow-square-out"></i>
+            </a>
+        }
+
 		{stats &&
                 <div class="contributors">
                     <h3>Contributeurs</h3>
