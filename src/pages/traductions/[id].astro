@@ -1,53 +1,85 @@
 ---
-import { getCollection, render } from "astro:content";
+import {getCollection, render} from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import {avatar, type CreditsResponse, fetchCredits} from "../../weblateClient.ts";
+import {avatar, type CreditDatum, type CreditsResponse, fetchCredits} from "../../weblateClient.ts";
 
 export const getStaticPaths = async () => {
 	const translations = await getCollection("translations");
 
 	return translations.map((translation) => ({
-		params: { id: translation.id },
-		props: { translation },
+		params: {id: translation.id},
+		props: {translation},
 	}));
 };
 
-const { translation } = Astro.props;
-const { Content } = await render(translation);
-let stats: CreditsResponse|undefined;
+const {translation} = Astro.props;
+const {Content} = await render(translation);
+let stats: CreditDatum[] | undefined;
 
 if (translation.data.weblateComponent) {
-	stats = await fetchCredits(translation.data.weblateComponent);
+	stats = (await fetchCredits(translation.data.weblateComponent)).flatMap(l => l['French']);
 }
 ---
 
 <Layout
-	title={translation.data.name}
+        title={translation.data.name}
 >
 	{
 		translation.data.externalUrl ? (
-			<a href={translation.data.externalUrl}>Lien vers le projet</a>
+                <a href={translation.data.externalUrl}>Lien vers le projet</a>
 		) : undefined
 	}
 
-	<Content />
+    <Content/>
 
-	<aside>
+    <aside slot="after-main">
 		{stats &&
-			<>
-				<h2>Contributeurs</h2>
+                <div class="contributors">
+                    <h3>Contributeurs</h3>
 
-				{
-					stats
-						?.flatMap(l => l['French'])
-						.map(c =>
-							<div>
-								<img alt="" src={avatar(c.username)} />
-								{ c.full_name }
-							</div>
-						)
-				}
-			</>
+					{
+						stats
+							.slice(0, 10)
+							.map(c =>
+                                    <div>
+                                        <img alt="" src={avatar(c.username)}/>
+										{c.full_name}
+                                    </div>
+							)
+					}
+					{stats.length > 10 &&
+                            <div>
+                                <a> {/* TODO link to contributors list */}
+                                    <i class="ph ph-user-circle"></i>
+									{stats.length - 10} autre contributeurs
+                                </a>
+                            </div>
+					}
+                </div>
 		}
-	</aside>
+    </aside>
 </Layout>
+
+<style lang="scss">
+  aside {
+    & > div {
+      &.contributors {
+        display: flex;
+        gap: 0.5em;
+        flex-direction: column;
+
+        div {
+          display: flex;
+          align-items: center;
+          gap: 0.5em;
+          font-size: 0.75em;
+
+          img {
+            height: 24px;
+            border-radius: 50%;
+          }
+        }
+      }
+    }
+  }
+</style>

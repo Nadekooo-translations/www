@@ -12,6 +12,7 @@ const {title, description, heroUrl, activeNav} = Astro.props;
         <main>
             <slot/>
         </main>
+        <slot name="after-main"/>
     </div>
 </BaseLayout>
 
