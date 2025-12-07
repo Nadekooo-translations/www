@@ -1,91 +1,114 @@
 ---
-import {getCollection, render} from "astro:content";
+import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import {avatar, type CreditDatum, type CreditsResponse, fetchCredits} from "../../weblateClient.ts";
+import { avatar, type CreditDatum, fetchCredits } from "../../weblateClient.ts";
+import LinkButton from "../../components/LinkButton.astro";
 
 export const getStaticPaths = async () => {
 	const translations = await getCollection("translations");
 
 	return translations.map((translation) => ({
-		params: {id: translation.id},
-		props: {translation},
+		params: { id: translation.id },
+		props: { translation },
 	}));
 };
 
-const {translation} = Astro.props;
-const {Content} = await render(translation);
+const { translation } = Astro.props;
+const { Content } = await render(translation);
 let stats: CreditDatum[] | undefined;
 
 if (translation.data.weblateComponent) {
-	stats = (await fetchCredits(translation.data.weblateComponent)).flatMap(l => l['French']);
+	stats = (await fetchCredits(translation.data.weblateComponent)).flatMap(
+		(l) => l["French"]
+	);
 }
 ---
 
-<Layout
-        title={translation.data.name}
->
-	{
-		translation.data.externalUrl ? (
-                <a href={translation.data.externalUrl}>Lien vers le projet</a>
-		) : undefined
-	}
+<Layout title={translation.data.name}>
+	<Content />
 
-    <Content/>
+	<aside slot="after-main">
+		<div>
+			{
+				translation.data.externalUrl && (
+					<LinkButton href={translation.data.externalUrl} target="_blank">
+						Site web <i class="ph ph-arrow-square-out" />
+					</LinkButton>
+				)
+			}
+		</div>
 
-    <aside slot="after-main">
-        {translation.data.externalUrl &&
-            <a href={translation.data.externalUrl} class="external-website">
-                Site web <i class="ph arrow-square-out"></i>
-            </a>
-        }
+		<div>
+			{
+				translation.data.contributionUrl && (
+					<LinkButton href={translation.data.contributionUrl} target="_blank" style="green">
+						Traduire <i class="ph ph-arrow-square-out" />
+					</LinkButton>
+				)
+			}
+		</div>
 
-		{stats &&
-                <div class="contributors">
-                    <h3>Contributeurs</h3>
+		{
+			stats && (
+				<div class="contributors">
+					<h3>Contributeurs</h3>
 
-					{
-						stats
-							.slice(0, 10)
-							.map(c =>
-                                    <div>
-                                        <img alt="" src={avatar(c.username)}/>
-										{c.full_name}
-                                    </div>
-							)
-					}
-					{stats.length > 10 &&
-                            <div>
-                                <a> {/* TODO link to contributors list */}
-                                    <i class="ph ph-user-circle"></i>
-									{stats.length - 10} autre contributeurs
-                                </a>
-                            </div>
-					}
-                </div>
+					{stats.slice(0, 10).map((c) => (
+						<div>
+							<img alt="" src={avatar(c.username)} />
+							{c.full_name}
+						</div>
+					))}
+					{stats.length > 10 && (
+						<div>
+							<a>
+								{/* TODO link to contributors list */}
+								<i class="ph ph-user-circle" />
+								{stats.length - 10} autre contributeurs
+							</a>
+						</div>
+					)}
+				</div>
+			)
 		}
-    </aside>
+	</aside>
 </Layout>
 
 <style lang="scss">
-  aside {
-    & > div {
-      &.contributors {
-        display: flex;
-        gap: 0.5em;
-        flex-direction: column;
+	@use "../../styles/colors";
 
-        div {
-          display: flex;
-          align-items: center;
-          gap: 0.5em;
-          font-size: 0.75em;
+	aside {
+		width: 25ch;
+		margin-top: 2em;
+		padding: 1.5em 1em;
 
-          img {
-            height: 24px;
-            border-radius: 50%;
+		background-color: colors.$stone-900;
+
+		border: 1px solid colors.$stone-800;
+		border-radius: 0.25em;
+
+		& > div {
+			&.contributors {
+				display: flex;
+				gap: 0.5em;
+				flex-direction: column;
+
+				div {
+					display: flex;
+					align-items: center;
+					gap: 0.5em;
+					font-size: 0.75em;
+
+					img {
+						height: 24px;
+						border-radius: 50%;
+					}
+
+          .ph-user-circle {
+            font-size: 24px;
           }
-        }
-      }
-    }
-  }
+				}
+			}
+		}
+	}
 </style>

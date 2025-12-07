@@ -1,0 +1,24 @@
+---
+const { href, target, style } = Astro.props as {href: string, target?: string, style?: 'green'};
+---
+
+<a href={href} target={target} class={"link-button " + style}>
+	<slot />
+</a>
+
+<style lang="scss">
+	@use "../styles/colors";
+
+	a.link-button {
+		color: colors.$white;
+		background-color: colors.$slate-800;
+
+		padding: 0.25em 0.5em;
+		border-radius: 0.25em;
+		text-decoration: none;
+
+		&.green {
+			background-color: colors.$lime-800;
+		}
+	}
+</style>
