@@ -17,8 +17,20 @@ const { href, target, style } = Astro.props as {href: string, target?: string, s
 		border-radius: 0.25em;
 		text-decoration: none;
 
+	  	display: block;
+
+	  	width: fit-content;
+
+		transition: 0.25s;
+	  	transition-property: filter, box-shadow;
+
 		&.green {
 			background-color: colors.$lime-800;
 		}
+
+	  &:hover {
+		filter: brightness(110%);
+        box-shadow: 0 3px 7px 0 black;
+	  }
 	}
 </style>

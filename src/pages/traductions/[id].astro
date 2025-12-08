@@ -22,31 +22,46 @@ if (translation.data.weblateComponent) {
 		(l) => l["French"]
 	);
 }
+
+const contributionUrl = translation.data.contributionUrl
+    || (
+        translation.data.weblateComponent
+            ? import.meta.env.WEBLATE_CONTRIB_TEMPLATE.replace("{}", translation.data.weblateComponent)
+            : undefined
+    );
+
+const contributorsUrl = translation.data.contributorsUrl
+    || (
+        translation.data.weblateComponent
+            ? import.meta.env.WEBLATE_CONTRIBUTORS_TEMPLATE.replace("{}", translation.data.weblateComponent)
+            : undefined
+    );
+
 ---
 
 <Layout title={translation.data.name}>
 	<Content />
 
 	<aside slot="after-main">
-		<div>
-			{
-				translation.data.externalUrl && (
-					<LinkButton href={translation.data.externalUrl} target="_blank">
-						Site web <i class="ph ph-arrow-square-out" />
-					</LinkButton>
-				)
-			}
-		</div>
+        {
+            translation.data.externalUrl && (
+                <div>
+                    <LinkButton href={translation.data.externalUrl} target="_blank">
+                        Site web <i class="ph ph-arrow-square-out"/>
+                    </LinkButton>
+                </div>
+            )
+        }
 
-		<div>
-			{
-				translation.data.contributionUrl && (
-					<LinkButton href={translation.data.contributionUrl} target="_blank" style="green">
-						Traduire <i class="ph ph-arrow-square-out" />
-					</LinkButton>
-				)
-			}
-		</div>
+        {
+            contributionUrl && (
+                <div>
+                    <LinkButton href={contributionUrl} target="_blank" style="green">
+                        Traduire <i class="ph ph-arrow-square-out"/>
+                    </LinkButton>
+                </div>
+            )
+        }
 
 		{
 			stats && (
@@ -55,18 +70,15 @@ if (translation.data.weblateComponent) {
 
 					{stats.slice(0, 10).map((c) => (
 						<div>
-							<img alt="" src={avatar(c.username)} />
+							<img alt="" src={avatar(c.username)} height="24" />
 							{c.full_name}
 						</div>
 					))}
 					{stats.length > 10 && (
-						<div>
-							<a>
-								{/* TODO link to contributors list */}
+							<a target="_blank" href={contributorsUrl}>
 								<i class="ph ph-user-circle" />
-								{stats.length - 10} autre contributeurs
+								{stats.length - 10} autres contributeurs
 							</a>
-						</div>
 					)}
 				</div>
 			)
@@ -78,6 +90,11 @@ if (translation.data.weblateComponent) {
 	@use "../../styles/colors";
 
 	aside {
+        display: flex;
+
+        flex-direction: column;
+        gap: 0.25em;
+
 		width: 25ch;
 		margin-top: 2em;
 		padding: 1.5em 1em;
@@ -90,25 +107,40 @@ if (translation.data.weblateComponent) {
 		& > div {
 			&.contributors {
 				display: flex;
-				gap: 0.5em;
+				gap: 0.25em;
 				flex-direction: column;
 
-				div {
+				div, a {
 					display: flex;
 					align-items: center;
 					gap: 0.5em;
-					font-size: 0.75em;
+					font-size: 0.75rem;
+
+                    color: colors.$white;
+                    text-decoration: none;
+                    border-radius: 0.25em;
+                    padding: 0.2em;
 
 					img {
 						height: 24px;
+                        width: 24px;
 						border-radius: 50%;
 					}
 
-          .ph-user-circle {
-            font-size: 24px;
-          }
+                    .ph-user-circle {
+                        font-size: 24px;
+                        display: inline
+                    }
+
+                    &:hover {
+                        background-color: colors.$stone-800;
+                    }
 				}
 			}
+
+            h2, h3, h4, h5, h6 {
+                margin-bottom: 0;
+            }
 		}
 	}
 </style>
