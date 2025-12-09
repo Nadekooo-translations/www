@@ -5,7 +5,13 @@ weblateComponent: your-turn-to-die/yttd-fr
 
 ---
 import Carousel from "../components/Carousel.vue";
+import {Image} from "astro:assets";
+import joe from "../images/yttd/joe.png";
+import keiji from "../images/yttd/keiji.jpg";
 
 # Your Turn to Die
 
-<Carousel client:load v-images="[]" />
+<Carousel>
+    <Image src={joe} alt="Joe" />
+    <Image src={keiji} alt="Keiji" />
+</Carousel>
