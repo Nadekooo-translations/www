@@ -2,16 +2,10 @@
 name: Your Turn to Die
 externalUrl: https://yttd.fr
 weblateComponent: your-turn-to-die/yttd-fr
+carouselImages:
+    - ../images/yttd/joe.png
+    - ../images/yttd/keiji.jpg
 
 ---
-import Carousel from "../components/Carousel.vue";
-import {Image} from "astro:assets";
-import joe from "../images/yttd/joe.png";
-import keiji from "../images/yttd/keiji.jpg";
-
 # Your Turn to Die
 
-<Carousel>
-    <Image src={joe} alt="Joe" />
-    <Image src={keiji} alt="Keiji" />
-</Carousel>

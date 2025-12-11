@@ -3,6 +3,9 @@ import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import { avatar, type CreditDatum, fetchCredits } from "../../weblateClient.ts";
 import LinkButton from "../../components/LinkButton.astro";
+import Carousel from "../../components/Carousel.vue";
+import {getImage} from "astro:assets";
+import type {GetImageResult} from "astro";
 
 export const getStaticPaths = async () => {
 	const translations = await getCollection("translations");
@@ -37,9 +40,24 @@ const contributorsUrl = translation.data.contributorsUrl
             : undefined
     );
 
+const carouselImages = await (async () => {
+	if (!translation.data.carouselImages) return [];
+
+	const generatedImages: Partial<GetImageResult>[] = [];
+
+	for (const img of translation.data.carouselImages) {
+		const {src, attributes} = await getImage({src: img, height: 1024});
+		generatedImages.push({src, attributes});
+	}
+
+	return generatedImages;
+})();
+
 ---
 
 <Layout title={translation.data.name}>
+    <Carousel client:load images={carouselImages} />
+
 	<Content />
 
 	<aside slot="after-main">
