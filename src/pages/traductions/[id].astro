@@ -6,6 +6,7 @@ import LinkButton from "../../components/LinkButton.astro";
 import Carousel from "../../components/Carousel.vue";
 import {getImage} from "astro:assets";
 import type {GetImageResult} from "astro";
+import { transformer } from "astro:schema";
 
 export const getStaticPaths = async () => {
 	const translations = await getCollection("translations");
@@ -43,11 +44,28 @@ const contributorsUrl = translation.data.contributorsUrl
 const carouselImages = await (async () => {
 	if (!translation.data.carouselImages) return [];
 
-	const generatedImages: Partial<GetImageResult>[] = [];
+	const generatedImages: {
+		src: string,
+		attributes: Record<string, any>,
+		caption: string|undefined,
+		link: string|undefined
+	}[] = [];
 
 	for (const img of translation.data.carouselImages) {
-		const {src, attributes} = await getImage({src: img, height: 1024});
-		generatedImages.push({src, attributes});
+		let origSrc, caption, link;
+
+		if (img.src) {
+			origSrc = img
+		} else if (img?.image) {
+			origSrc = img.image;
+			caption = img.caption;
+			link = img.link;
+		} else {
+			throw new Error("Misformatted image in " + JSON.stringify(translation.data.carouselImages));
+		}
+
+		const {src, attributes} = await getImage({src: origSrc, height: 1024});
+		generatedImages.push({src, attributes, caption, link});
 	}
 
 	return generatedImages;
@@ -58,7 +76,10 @@ const carouselImages = await (async () => {
 <Layout title={translation.data.name}>
 	<h1>{translation.data.name}</h1>
 
-    <Carousel client:load images={carouselImages} />
+	{
+		translation.data.carouselImages?.length
+		&& <Carousel client:load images={carouselImages} />
+	}
 
 	<Content />
 

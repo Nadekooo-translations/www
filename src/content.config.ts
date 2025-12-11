@@ -9,7 +9,14 @@ const translations = defineCollection({
 		contributorsUrl: z.optional(z.string().url()),
 		externalUrl: z.optional(z.string().url()),
 		weblateComponent: z.optional(z.string()),
-		carouselImages: z.optional(z.array(image()))
+		carouselImages: z.optional(z.array(
+			image()
+			.or(z.object({
+				image: image(),
+				caption: z.optional(z.string()),
+				link: z.optional(z.string()),
+			}))
+		))
 	}),
 });
 

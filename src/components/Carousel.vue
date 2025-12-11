@@ -1,24 +1,26 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import type { GetImageResult } from "astro";
 const props = defineProps({ images: { type: Array, required: true } }) as { readonly images: Partial<GetImageResult>[] };
 
-let intervalRef: number|undefined;
+let intervalRef: number | undefined;
 
 const automatic = ref(true);
-const currentImage = ref(0);
+const currentImageIndex = ref(0);
+
+const currentImage = computed(() => props.images[currentImageIndex.value]);
 
 const move = (offset: number, fromAutomatic: boolean = false) => {
   if (!fromAutomatic) {
     automatic.value = false;
   }
 
-  currentImage.value += offset;
+  currentImageIndex.value += offset;
 
-  if (currentImage.value >= props.images.length) {
-    currentImage.value = 0;
-  } else if (currentImage.value < 0) {
-    currentImage.value = props.images.length - 1;
+  if (currentImageIndex.value >= props.images.length) {
+    currentImageIndex.value = 0;
+  } else if (currentImageIndex.value < 0) {
+    currentImageIndex.value = props.images.length - 1;
   }
 };
 
@@ -38,16 +40,25 @@ onUnmounted(() => {
 <template>
   <div class="carousel">
     <Transition name="carousel" v-for="(img, idx) in props.images">
-      <img alt="" :src="img.src" :width="img.attributes.width" :height="img.attributes.height" v-show="currentImage === idx" />
+      <img alt="" :src="img.src" :width="img.attributes.width" :height="img.attributes.height"
+        v-show="currentImageIndex === idx" />
     </Transition>
 
     <div class="overlay">
       <button @click="move(-1)"><i class="ph ph-caret-left"></i></button>
       <div class="pagination">
-        <i v-for="(_, idx) in props.images" class="ph ph-dot" :class="{'current': currentImage === idx}"></i>
+        <i v-for="(_, idx) in props.images" class="ph ph-dot" :class="{ 'current': currentImageIndex === idx }"></i>
       </div>
       <button @click="move(1)"><i class="ph ph-caret-right"></i></button>
     </div>
+
+    <Transition name="caption">
+      <div class="carousel-caption" v-if="currentImage.caption || currentImage.link">
+        <span v-if="currentImage.caption">{{ currentImage.caption }}</span>
+        &ThinSpace;
+        <a v-if="currentImage.link" :href="currentImage.link">{{ currentImage.link }}</a>
+      </div>
+    </Transition>
   </div>
 </template>
 <style lang="scss">
@@ -58,6 +69,7 @@ $height: 45ch;
 
 div.carousel {
   display: flex;
+  flex-wrap: wrap;
   height: $height;
   width: 75ch;
   user-select: none;
@@ -117,6 +129,22 @@ div.carousel {
       i.current {
         color: colors.$white;
       }
+    }
+  }
+
+  div.carousel-caption {
+    flex-basis: 100%;
+    color: colors.$neutral-400;
+    margin-top: 0.5em;
+
+    &.caption-enter-active,
+    &.caption-leave-active {
+      transition: opacity 0.5s ease;
+    }
+
+    &.caption-enter-from,
+    &.caption-leave-to {
+      opacity: 0;
     }
   }
 }
