@@ -1,12 +1,18 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import type { GetImageResult } from "astro";
 const props = defineProps({ images: { type: Array, required: true } }) as { readonly images: Partial<GetImageResult>[] };
+
+let intervalRef: number|undefined;
 
 const automatic = ref(true);
 const currentImage = ref(0);
 
-const move = (offset: number) => {
+const move = (offset: number, fromAutomatic: boolean = false) => {
+  if (!fromAutomatic) {
+    automatic.value = false;
+  }
+
   currentImage.value += offset;
 
   if (currentImage.value >= props.images.length) {
@@ -15,6 +21,19 @@ const move = (offset: number) => {
     currentImage.value = props.images.length - 1;
   }
 };
+
+onMounted(() => {
+  // @ts-ignore TS thinks this is node's setInterval for some reason
+  intervalRef = setInterval(() => {
+    if (automatic.value) {
+      move(1, true);
+    }
+  }, 5000);
+});
+
+onUnmounted(() => {
+  clearTimeout(intervalRef);
+});
 </script>
 <template>
   <div class="carousel">
