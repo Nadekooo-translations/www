@@ -24,6 +24,9 @@ const move = (offset: number) => {
 
     <div class="overlay">
       <button @click="move(-1)"><i class="ph ph-caret-left"></i></button>
+      <div class="pagination">
+        <i v-for="(_, idx) in props.images" class="ph ph-dot" :class="{'current': currentImage === idx}"></i>
+      </div>
       <button @click="move(1)"><i class="ph ph-caret-right"></i></button>
     </div>
   </div>
@@ -40,6 +43,8 @@ div.carousel {
   width: 75ch;
   user-select: none;
   justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
 
   background: colors.$stone-900;
 
@@ -80,6 +85,18 @@ div.carousel {
 
       &:hover {
         background: color.change(colors.$stone-950, $alpha: 50%);
+      }
+    }
+
+    div.pagination {
+      display: flex;
+      align-items: end;
+      font-size: 2em;
+      text-shadow: 0 0 4px black;
+      color: color.change(colors.$white, $alpha: 50%);
+
+      i.current {
+        color: colors.$white;
       }
     }
   }
