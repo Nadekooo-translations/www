@@ -7,6 +7,7 @@ import Carousel from "../../components/Carousel.vue";
 import {getImage} from "astro:assets";
 import type {GetImageResult} from "astro";
 import { transformer } from "astro:schema";
+import { Image } from "astro:assets";
 
 export const getStaticPaths = async () => {
 	const translations = await getCollection("translations");
@@ -111,7 +112,7 @@ const carouselImages = await (async () => {
 
 					{stats.slice(0, 10).map((c) => (
 						<div>
-							<img alt="" src={avatar(c.username)} height="24" />
+							<Image alt="" src={{src: avatar(c.username), format: "png"}} height="24" loading="eager" />
 							{c.full_name}
 						</div>
 					))}
