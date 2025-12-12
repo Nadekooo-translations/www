@@ -2,37 +2,36 @@
 const path = Astro.url.pathname;
 
 const tabs = [
-	{
-		href: "/",
-		name: "Accueil",
-	},
-	{
-		href: "/traductions/",
-		name: "Traductions",
-		matches: [
-			/^\/traductions\/.*/
-		],
-	},
-	{
-		href: "/a-propos/",
-		name: "À propos",
-	},
+  {
+    href: "/",
+    name: "Accueil",
+  },
+  {
+    href: "/traductions/",
+    name: "Traductions",
+    matches: [/^\/traductions\/.*/],
+  },
+  {
+    href: "/a-propos/",
+    name: "À propos",
+  },
 ];
 
-const matches = (regexes: RegExp[] | undefined) => regexes?.some(r => r.test(path));
+const matches = (regexes: RegExp[] | undefined) =>
+  regexes?.some((r) => r.test(path));
 ---
 
 <header>
-    <div class="heading">
-        Nadeko
-    </div>
-    <nav>
-		{tabs.map(t =>
-                <div class={t.href === path || matches(t.matches) ? 'active' : ''}>
-                    <a href={t.href}>{t.name}</a>
-                </div>
-		)}
-    </nav>
+  <div class="heading">Nadeko</div>
+  <nav>
+    {
+      tabs.map((t) => (
+        <div class={t.href === path || matches(t.matches) ? "active" : ""}>
+          <a href={t.href}>{t.name}</a>
+        </div>
+      ))
+    }
+  </nav>
 </header>
 
 <style lang="scss">

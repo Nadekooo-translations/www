@@ -1,46 +1,44 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import {getCollection} from "astro:content";
+import { getCollection } from "astro:content";
 
 const trans = (await getCollection("translations")).reverse();
 ---
-<Layout
-        title="Traductions"
-        description="Mes traductions"
->
-    <img
-            src="https://media1.tenor.com/m/yMtzIUk9ab4AAAAC/orson-welles-welles.gif"
-            alt="GIF de Orson Welles avec les mots &quot;Pas mal non ? C'est français.&quot;"
-    />
 
-    <div class="translations-container">
-        {
-            trans.map(t => (
-                <a href={`/traductions/${t.id}`}>
-                    <article>
-                        <h3>{t.data.name}</h3>
-                    </article>
-                </a>
-            ))
-        }
-    </div>
+<Layout title="Traductions" description="Mes traductions">
+  <img
+    src="https://media1.tenor.com/m/yMtzIUk9ab4AAAAC/orson-welles-welles.gif"
+    alt='GIF de Orson Welles avec les mots "Pas mal non ? C&apos;est français."'
+  />
+
+  <div class="translations-container">
+    {
+      trans.map((t) => (
+        <a href={`/traductions/${t.id}`}>
+          <article>
+            <h3>{t.data.name}</h3>
+          </article>
+        </a>
+      ))
+    }
+  </div>
 </Layout>
 
 <style lang="scss">
-    @use "../styles/colors";
+  @use "../styles/colors";
 
-    a {
-        text-decoration: none;
-        color: colors.$white;
+  a {
+    text-decoration: none;
+    color: colors.$white;
 
-        article {
-            h3 {
-                color: colors.$red-400;
+    article {
+      h3 {
+        color: colors.$red-400;
 
-                &:hover {
-                    text-decoration: underline;
-                }
-            }
+        &:hover {
+          text-decoration: underline;
         }
+      }
     }
+  }
 </style>

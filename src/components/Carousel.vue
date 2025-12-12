@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import type { GetImageResult } from "astro";
-const props = defineProps({ images: { type: Array, required: true } }) as { readonly images: Partial<GetImageResult>[] };
+const props = defineProps({ images: { type: Array, required: true } }) as {
+  readonly images: Partial<GetImageResult>[];
+};
 
 let intervalRef: number | undefined;
 
@@ -40,23 +42,37 @@ onUnmounted(() => {
 <template>
   <div class="carousel">
     <Transition name="carousel" v-for="(img, idx) in props.images">
-      <img alt="" :src="img.src" :width="img.attributes.width" :height="img.attributes.height"
-        v-show="currentImageIndex === idx" />
+      <img
+        alt=""
+        :src="img.src"
+        :width="img.attributes.width"
+        :height="img.attributes.height"
+        v-show="currentImageIndex === idx"
+      />
     </Transition>
 
     <div class="overlay">
       <button @click="move(-1)"><i class="ph ph-caret-left"></i></button>
       <div class="pagination">
-        <i v-for="(_, idx) in props.images" class="ph ph-dot" :class="{ 'current': currentImageIndex === idx }"></i>
+        <i
+          v-for="(_, idx) in props.images"
+          class="ph ph-dot"
+          :class="{ current: currentImageIndex === idx }"
+        ></i>
       </div>
       <button @click="move(1)"><i class="ph ph-caret-right"></i></button>
     </div>
 
     <Transition name="caption">
-      <div class="carousel-caption" v-if="currentImage.caption || currentImage.link">
+      <div
+        class="carousel-caption"
+        v-if="currentImage.caption || currentImage.link"
+      >
         <span v-if="currentImage.caption">{{ currentImage.caption }}</span>
         &ThinSpace;
-        <a v-if="currentImage.link" :href="currentImage.link">{{ currentImage.link }}</a>
+        <a v-if="currentImage.link" :href="currentImage.link">{{
+          currentImage.link
+        }}</a>
       </div>
     </Transition>
   </div>

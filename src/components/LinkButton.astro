@@ -1,36 +1,40 @@
 ---
-const { href, target, style } = Astro.props as {href: string, target?: string, style?: 'green'};
+const { href, target, style } = Astro.props as {
+  href: string;
+  target?: string;
+  style?: "green";
+};
 ---
 
 <a href={href} target={target} class={"link-button " + style}>
-	<slot />
+  <slot />
 </a>
 
 <style lang="scss">
-	@use "../styles/colors";
+  @use "../styles/colors";
 
-	a.link-button {
-		color: colors.$white;
-		background-color: colors.$slate-800;
+  a.link-button {
+    color: colors.$white;
+    background-color: colors.$slate-800;
 
-		padding: 0.25em 0.5em;
-		border-radius: 0.25em;
-		text-decoration: none;
+    padding: 0.25em 0.5em;
+    border-radius: 0.25em;
+    text-decoration: none;
 
-	  	display: block;
+    display: block;
 
-	  	width: fit-content;
+    width: fit-content;
 
-		transition: 0.25s;
-	  	transition-property: filter, box-shadow;
+    transition: 0.25s;
+    transition-property: filter, box-shadow;
 
-		&.green {
-			background-color: colors.$lime-800;
-		}
+    &.green {
+      background-color: colors.$lime-800;
+    }
 
-	  &:hover {
-		filter: brightness(110%);
-        box-shadow: 0 3px 7px 0 black;
-	  }
-	}
+    &:hover {
+      filter: brightness(110%);
+      box-shadow: 0 3px 7px 0 black;
+    }
+  }
 </style>
