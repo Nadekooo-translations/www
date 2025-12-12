@@ -10,7 +10,7 @@ const { href, target, style } = Astro.props as {
   <slot />
 </a>
 
-<style lang="scss">
+<style lang="scss" is:global>
   @use "../styles/colors";
 
   a.link-button {
@@ -32,9 +32,17 @@ const { href, target, style } = Astro.props as {
       background-color: colors.$lime-800;
     }
 
+    &.discord {
+      background-color: colors.$discord;
+    }
+
     &:hover {
       filter: brightness(110%);
       box-shadow: 0 3px 7px 0 black;
+    }
+
+    svg {
+      vertical-align: bottom;
     }
   }
 </style>

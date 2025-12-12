@@ -9,6 +9,7 @@ const translations = defineCollection({
       contributionUrl: z.optional(z.string().url()),
       contributorsUrl: z.optional(z.string().url()),
       externalUrl: z.optional(z.string().url()),
+      discordInvite: z.optional(z.string().url()),
       weblateComponent: z.optional(z.string()),
       carouselImages: z.optional(
         z.array(

@@ -5,9 +5,8 @@ import { avatar, type CreditDatum, fetchCredits } from "../../weblateClient.ts";
 import LinkButton from "../../components/LinkButton.astro";
 import Carousel from "../../components/Carousel.vue";
 import { getImage } from "astro:assets";
-import type { GetImageResult } from "astro";
-import { transformer } from "astro:schema";
 import { Image } from "astro:assets";
+import { Discord } from "simple-icons-astro";
 
 export const getStaticPaths = async () => {
   const translations = await getCollection("translations");
@@ -107,6 +106,16 @@ const carouselImages = await (async () => {
         <div>
           <LinkButton href={contributionUrl} target="_blank" style="green">
             Traduire <i class="ph ph-arrow-square-out" />
+          </LinkButton>
+        </div>
+      )
+    }
+
+    {
+      translation.data.discordInvite && (
+        <div>
+          <LinkButton href={translation.data.discordInvite} target="_blank" style="discord">
+            <Discord /> Discord
           </LinkButton>
         </div>
       )
