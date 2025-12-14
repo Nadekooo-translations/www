@@ -24,6 +24,7 @@ const translations = defineCollection({
         ),
       ),
       icon: z.optional(image()),
+      resolvedIcon: z.optional(z.string()),
     }),
 });
 
