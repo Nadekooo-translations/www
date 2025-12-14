@@ -1,8 +1,24 @@
 ---
+import { Image, getImage } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 
+import placeholder from "../images/translation-placeholder.webp";
+
 const trans = (await getCollection("translations")).reverse();
+
+trans.push({
+  collection: "translations",
+  data: {
+    name: "Test",
+  },
+});
+
+for (const t of trans) {
+  t.data.resolvedIcon = (
+    await getImage({ src: t.data.icon ?? placeholder, height: 512 })
+  ).src;
+}
 ---
 
 <Layout title="Traductions" description="Mes traductions">
@@ -16,6 +32,10 @@ const trans = (await getCollection("translations")).reverse();
       trans.map((t) => (
         <a href={`/traductions/${t.id}`}>
           <article>
+            <div
+              style={{ backgroundImage: `url(${t.data.resolvedIcon})` }}
+              class={"background-image" + (t.data.icon ? "" : " placeholder")}
+            />
             <h3>{t.data.name}</h3>
           </article>
         </a>
@@ -27,16 +47,54 @@ const trans = (await getCollection("translations")).reverse();
 <style lang="scss">
   @use "../styles/colors";
 
-  a {
-    text-decoration: none;
-    color: colors.$white;
+  div.translations-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2em;
+    justify-content: space-between;
 
-    article {
-      h3 {
-        color: colors.$red-400;
+    a {
+      display: block;
+      text-decoration: none;
+      color: colors.$white;
+      padding: 0.5em;
+      width: 35ch;
 
-        &:hover {
+      article {
+        display: flex;
+        flex-direction: column;
+        height: 15em;
+
+        h3 {
+          color: colors.$red-400;
+          margin: 1em 0.5em;
+        }
+
+        div.background-image {
+          height: 100%;
+          width: 100%;
+
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+
+          border-radius: 0.5em;
+
+          transition: 0.7s background-position;
+
+          &.placeholder {
+            background-size: contain;
+          }
+        }
+      }
+
+      &:hover {
+        h3 {
           text-decoration: underline;
+        }
+
+        article div.background-image {
+          background-position: top;
         }
       }
     }

@@ -1,5 +1,6 @@
 import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
+import type { GetImageResult } from "astro";
 
 const translations = defineCollection({
   loader: glob({ pattern: "**/*.mdx", base: "./src/translations" }),
@@ -22,6 +23,7 @@ const translations = defineCollection({
           ),
         ),
       ),
+      icon: z.optional(image()),
     }),
 });
 
