@@ -28,5 +28,11 @@ export const fetchCredits = async (
   return res.data;
 };
 
+export const fetchTranslationPercent = async (component: string, lang = "fr"): Promise<number> => {
+  const {translated_percent} = (await client.get(`/translations/${component}/${lang}/`)).data;
+
+  return translated_percent;
+};
+
 export const avatar = (username: string) =>
   import.meta.env.WEBLATE_AVATAR_BASE_URL + username + ".png";

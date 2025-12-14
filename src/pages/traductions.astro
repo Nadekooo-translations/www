@@ -5,7 +5,9 @@ import { getCollection } from "astro:content";
 
 import placeholder from "../images/translation-placeholder.webp";
 
-const trans = (await getCollection("translations")).sort((t1, t2) => t1.data.name.localeCompare(t2.data.name, "fr"));
+const trans = (await getCollection("translations")).sort((t1, t2) =>
+  t1.data.name.localeCompare(t2.data.name, "fr"),
+);
 
 for (const t of trans) {
   t.data.resolvedIcon = (
@@ -15,10 +17,11 @@ for (const t of trans) {
 ---
 
 <Layout title="Traductions" description="Mes traductions">
-  <img
-    src="https://media1.tenor.com/m/yMtzIUk9ab4AAAAC/orson-welles-welles.gif"
-    alt='GIF de Orson Welles avec les mots "Pas mal non ? C&apos;est français."'
-  />
+  <h1>Traductions</h1>
+
+  <p>
+    Ici je traduit plusieurs petits jeux qui me tiennent à cœur
+  </p>
 
   <div class="translations-container">
     {

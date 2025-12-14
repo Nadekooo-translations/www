@@ -1,12 +1,13 @@
 ---
 import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import { avatar, type CreditDatum, fetchCredits } from "../../weblateClient.ts";
+import { avatar, type CreditDatum, fetchCredits, fetchTranslationPercent } from "../../weblateClient.ts";
 import LinkButton from "../../components/LinkButton.astro";
 import Carousel from "../../components/Carousel.vue";
 import { getImage } from "astro:assets";
 import { Image } from "astro:assets";
 import { Discord } from "simple-icons-astro";
+import ProgressBar from "../../components/ProgressBar.astro";
 
 export const getStaticPaths = async () => {
   const translations = await getCollection("translations");
@@ -20,11 +21,14 @@ export const getStaticPaths = async () => {
 const { translation } = Astro.props;
 const { Content } = await render(translation);
 let stats: CreditDatum[] | undefined;
+let translationPercent: number | undefined;
 
 if (translation.data.weblateComponent) {
   stats = (await fetchCredits(translation.data.weblateComponent)).flatMap(
     (l) => l["French"],
   );
+
+  translationPercent = await fetchTranslationPercent(translation.data.weblateComponent);
 }
 
 const contributionUrl =
@@ -92,6 +96,16 @@ const carouselImages = await (async () => {
 
   <aside slot="after-main">
     {
+      translationPercent !== undefined && (
+        <div class="translation-percent">
+          <ProgressBar progress={translationPercent} title="Progression de la traduction">
+            {translationPercent.toLocaleString()}&nbsp;%
+          </ProgressBar>
+        </div>
+      )
+    }
+
+    {
       translation.data.externalUrl && (
         <div>
           <LinkButton href={translation.data.externalUrl} target="_blank">
@@ -132,7 +146,7 @@ const carouselImages = await (async () => {
                 alt=""
                 src={{ src: avatar(c.username), format: "png" }}
                 height="24"
-                loading="eager"
+                loading="lazy"
               />
               {c.full_name}
             </div>
@@ -168,6 +182,10 @@ const carouselImages = await (async () => {
     border-radius: 0.25em;
 
     & > div {
+      &.translation-percent {
+        padding-bottom: 1em;
+      }
+
       &.contributors {
         display: flex;
         gap: 0.25em;
