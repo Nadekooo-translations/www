@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://staging-nad.vinceh121.me/sitemap-index.xml
