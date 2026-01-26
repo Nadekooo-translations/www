@@ -45,8 +45,8 @@ onUnmounted(() => {
       <img
         alt=""
         :src="img.src"
-        :width="img.attributes.width"
-        :height="img.attributes.height"
+        :width="img.attributes?.width"
+        :height="img.attributes?.height"
         v-show="currentImageIndex === idx"
       />
     </Transition>
