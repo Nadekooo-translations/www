@@ -99,7 +99,7 @@ const carouselImages = await (async () => {
       translationPercent !== undefined && (
         <div class="translation-percent">
           <ProgressBar progress={translationPercent} title="Progression de la traduction">
-            {translationPercent.toLocaleString()}&nbsp;%
+            {translationPercent.toLocaleString('fr-FR')}&nbsp;%
           </ProgressBar>
         </div>
       )
