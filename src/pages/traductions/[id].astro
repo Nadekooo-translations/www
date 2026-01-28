@@ -181,6 +181,11 @@ const carouselImages = await (async () => {
     border: 1px solid colors.$stone-800;
     border-radius: 0.25em;
 
+    @media (max-width: colors.$medium) {
+      width: unset;
+      margin: 0 1em;
+    }
+
     & > div {
       &.translation-percent {
         padding-bottom: 1em;

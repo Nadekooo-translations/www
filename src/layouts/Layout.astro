@@ -23,6 +23,10 @@ const { title, description, heroUrl, activeNav } = Astro.props;
     display: flex;
     justify-content: center;
 
+    @media (max-width: colors.$medium) {
+      flex-direction: column-reverse;
+    }
+
     main {
       width: 70vw;
       height: 100%;
