@@ -50,13 +50,15 @@ const matches = (regexes: RegExp[] | undefined) =>
     color: colors.$white;
     user-select: none;
 
-    height: 2em;
-
     padding: 0.5em 3em 0 1em;
 
+    @media (max-width: colors.$medium) {
+      flex-direction: column;
+      justify-content: center;
+      padding: 0.5em 1em;
+    }
+
     div.heading {
-      position: absolute;
-      left: 1em;
       cursor: default;
       font-size: 16pt;
     }
@@ -67,6 +69,13 @@ const matches = (regexes: RegExp[] | undefined) =>
       justify-content: flex-end;
       gap: 3em;
       width: 100%;
+
+      @media (max-width: colors.$medium) {
+        flex-direction: column;
+        align-items: center;
+        padding-top: 1em;
+        gap: 1em;
+      }
 
       div {
         &.active {
