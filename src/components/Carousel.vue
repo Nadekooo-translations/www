@@ -82,6 +82,7 @@ onUnmounted(() => {
 @use "sass:color";
 
 $height: 45ch;
+$heightMobile: 23ch;
 
 div.carousel {
   display: flex;
@@ -95,10 +96,20 @@ div.carousel {
 
   background: colors.$stone-900;
 
+  @media (max-width: colors.$medium) {
+    height: $heightMobile;
+    width: 100%;
+  }
+
   img {
     position: absolute;
     height: $height;
     width: auto;
+
+    @media (max-width: colors.$medium) {
+      height: $heightMobile;
+      width: auto;
+    }
 
     &.carousel-enter-active,
     &.carousel-leave-active {
